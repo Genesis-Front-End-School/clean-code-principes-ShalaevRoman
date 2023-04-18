@@ -26,7 +26,7 @@
       fixed
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon @click.stop="changeDrawerState()" />
       <v-toolbar-title v-text="title" />
     </v-app-bar>
     <v-main>
@@ -37,7 +37,7 @@
     <v-footer
       app
     >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <span>&copy; {{ getYear }}</span>
     </v-footer>
   </v-app>
 </template>
@@ -65,6 +65,16 @@ export default {
   },
   async fetch() {
     await this.$store.dispatch('courses/getToken')
+  },
+  computed: {
+    getYear() {
+      return new Date().getFullYear()
+    }
+  },
+  methods: {
+    changeDrawerState() {
+      this.drawer = !this.drawer
+    }
   },
 }
 </script>

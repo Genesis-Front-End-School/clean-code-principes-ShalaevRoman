@@ -10,10 +10,8 @@ export default {
   async fetch ({ store }) {
     if (!store.state.courses.token) {
       await store.dispatch('courses/getToken')
-      await store.dispatch('courses/getCourses')
-    } else {
-      await store.dispatch('courses/getCourses')
     }
+    await store.dispatch('courses/getCourses')
   }
 }
 </script>

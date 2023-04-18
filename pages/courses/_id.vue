@@ -11,25 +11,13 @@
               <v-subheader>Lessons</v-subheader>
               <v-divider></v-divider>
               <v-list-item-group>
-                <v-list-item
-                  v-for="(lesson) in selectedCourse.lessons"
+                <LessonItem
+                  v-for="lesson in selectedCourse.lessons"
                   :key="lesson.id"
-                  :disabled="lesson.status === 'locked'"
-                  @click="onSelectLesson(lesson)"
-                >
-                  <v-list-item-title>{{ lesson.title }}</v-list-item-title>
-                  <v-list-item-action>
-                    <v-icon
-                      v-if="lesson.status === 'unlocked'"
-                      :color="selectedLesson === lesson ? '#00E676' : 'gray'"
-                    >
-                      mdi-play-circle
-                    </v-icon>
-                    <v-icon v-else color="grey">
-                      mdi-lock
-                    </v-icon>
-                  </v-list-item-action>
-                </v-list-item>
+                  :lesson="lesson"
+                  :selectedLesson="selectedLesson"
+                  @onSelectLesson="onSelectLesson"
+                />
               </v-list-item-group>
             </v-list>
           </v-card-text>
@@ -80,6 +68,11 @@ export default {
       return this.selectedCourse.lessons.find(lesson => lesson.status === 'unlocked')
     },
   },
+  watch: {
+    selectedLesson () {
+      this.getProgress()
+    }
+  },
   mounted() {
     this.selectedLesson = this.availableLesson
     this.getProgress()
@@ -87,7 +80,6 @@ export default {
   methods: {
     onSelectLesson(lesson) {
       this.selectedLesson = lesson
-      this.getProgress()
     },
     getProgress() {
       const lastProgress = localStorage.getItem(this.selectedLesson.id)
