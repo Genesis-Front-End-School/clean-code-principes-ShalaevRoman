@@ -3,7 +3,11 @@
     <v-row>
       <v-col cols="12" md="7" lg="8">
         <v-card class="pa-4" :elevation="0">
-          <VideoPlayer :selected-lesson="selectedLesson" :lesson-progress="lessonProgress" :is-play="isPlay"/>
+          <VideoPlayer
+            :selected-lesson="selectedLesson"
+            :lesson-progress="lessonProgress"
+            :is-play="isPlay"
+          />
           <v-card-title>{{ selectedCourse.title }}</v-card-title>
           <v-card-subtitle>{{ selectedCourse.description }}</v-card-subtitle>
           <v-card-text>
@@ -15,7 +19,7 @@
                   v-for="lesson in selectedCourse.lessons"
                   :key="lesson.id"
                   :lesson="lesson"
-                  :selectedLesson="selectedLesson"
+                  :selected-lesson="selectedLesson"
                   @onSelectLesson="onSelectLesson"
                 />
               </v-list-item-group>
@@ -58,7 +62,12 @@ export default {
     };
   },
   async fetch ({ params, store }) {
-    await store.dispatch('courses/getCourseById', params.id)
+    try {
+      await store.dispatch('courses/getCourseById', params.id)
+    } catch (error) {
+      window.$nuxt.error(error)
+    }
+
   },
   computed: {
     selectedCourse() {
@@ -88,6 +97,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

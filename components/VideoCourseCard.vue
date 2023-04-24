@@ -1,19 +1,19 @@
 <template>
-  <v-card class="mb-5" :to="`/courses/${course.id}`">
+  <v-card class="mb-5" :to="`/courses/${courseId}`">
     <div class="video-wrapper">
       <video
-        :ref="nameElement"
-        :poster="previewImageLink"
+        :ref="refName"
+        :poster="imgPath"
         muted
         controls
         class="cursor-pointer video-player pa-5"
-        @mouseenter="playVideo()"
-        @mouseout="stopVideo()"
+        @mouseenter="playVideo($refs[refName], link)"
+        @mouseout="stopVideo($refs[refName])"
       >
       </video>
     </div>
     <v-avatar
-      v-if="course.status === 'launched'"
+      v-if="status === 'launched'"
       class="mt-2 ml-2"
       color="white"
       size="xs"
@@ -22,25 +22,28 @@
     </v-avatar>
     <v-card-title class="pt-4 d-flex flex-column">
       <div class="headline font-weight-bold mb-2">
-        {{ course.title }}
+        {{ title }}
       </div>
       <div class="grey--text font-weight-light mb-3 skills-wrapper">
         <ul>
-          <li v-for="(skill, i) in course.meta.skills" :key="i">
+          <li
+            v-for="(skill, i) in skills"
+            :key="i + Math.random()"
+          >
             {{ skill }}
           </li>
         </ul>
       </div>
       <div class="rating-wrapper">
         <v-rating
-          :value="course.rating"
+          :value="rating"
           background-color="grey lighten-3"
           color="primary"
           :readonly="true"
           :size="24"
         ></v-rating>
         <div class="subtitle-2 font-weight-bold">
-          {{ course.lessonsCount }} lessons
+          {{ lessonsCount }} lessons
         </div>
       </div>
     </v-card-title>
@@ -48,46 +51,79 @@
 </template>
 
 <script>
-import Hls from 'hls.js'
-
 export default {
   name: 'VideoCourseCard',
-  props: ['course'],
-  computed: {
-    previewImageLink () {
-      return this.course.previewImageLink + '/cover.webp'
+  props: {
+    playVideo: {
+      required: true,
+      type: Function
     },
+    stopVideo: {
+      required: true,
+      type: Function
+    },
+    refName: {
+      required: true,
+      type: String
+    },
+    previewImageLink: {
+      required: true,
+      type: String
+    },
+    link: {
+      required: true,
+      type: String
+    },
+    status: {
+      required: true,
+      type: String
+    },
+    title: {
+      require: true,
+      type: String,
+      default() {
+        return 'Title'
+      }
+    },
+    skills: {
+      require: true,
+      type: Array,
+      default() {
+        return ['some skills']
+      }
+    },
+    rating: {
+      require: true,
+      type: Number,
+      default() {
+        return 0
+      }
+    },
+    lessonsCount: {
+      require: true,
+      type: Number,
+      default() {
+        return 0
+      }
+    },
+    courseId: {
+      require: true,
+      type: String,
+      default () {
+        return '1'
+      }
+    }
   },
   data () {
     return {
       nameElement: 'videoPlayer'
     }
   },
-  methods: {
-    playVideo() {
-      const video = this.$refs[`${this.nameElement}`]
-      const link = this.course.meta.courseVideoPreview.link
-
-      if (Hls.isSupported()) {
-        const hls = new Hls()
-        hls.loadSource(link)
-        hls.attachMedia(video)
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          video.play()
-        });
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = link
-        video.addEventListener('loadedmetadata', () => {
-          video.play()
-        })
-      }
+  computed: {
+    imgPath () {
+      return this.previewImageLink + '/cover.webp'
     },
-    stopVideo() {
-      const video = this.$refs[`${this.nameElement}`]
-      video.pause()
-      video.currentTime = 0
-    }
-  },
+  }
 }
 </script>
 

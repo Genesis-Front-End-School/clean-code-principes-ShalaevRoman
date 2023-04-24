@@ -7,7 +7,24 @@ import Hls from 'hls.js'
 
 export default {
   name: 'VideoPlayer',
-  props: ['selectedLesson', 'lessonProgress'],
+  props: {
+    selectedLesson: {
+      required: false,
+      type: Object,
+      default() {
+        return {
+          title: 'Hello User'
+        }
+      }
+    },
+    lessonProgress: {
+      required: false,
+      type: Number,
+      default() {
+        return 0
+      }
+    }
+  },
   watch: {
     selectedLesson () {
       this.playLesson()

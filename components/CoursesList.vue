@@ -10,7 +10,17 @@
           lg="4"
         >
           <VideoCourseCard
-            :course="course"
+            :course-id="course.id"
+            :link="course.meta.courseVideoPreview.link"
+            :status="course.status"
+            :title="course.title"
+            :skills="course.meta.skills"
+            :rating="course.rating"
+            :lessons-count="course.lessonsCount"
+            :preview-image-link="course.previewImageLink"
+            :ref-name="course.id"
+            :play-video="playVideo"
+            :stop-video="stopVideo"
           />
         </v-col>
       </v-row>
@@ -24,6 +34,8 @@
 </template>
 
 <script>
+import Hls from 'hls.js'
+
 export default {
   name: 'CoursesList',
   data() {
@@ -45,6 +57,30 @@ export default {
       return Math.ceil(this.allCourses.length / this.itemsPerPage)
     }
   },
+  methods: {
+    playVideo(refName, link) {
+      const video = refName
+
+      if (Hls.isSupported()) {
+        const hls = new Hls()
+        hls.loadSource(link)
+        hls.attachMedia(video)
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play()
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = link
+        video.addEventListener('loadedmetadata', () => {
+          video.play()
+        })
+      }
+    },
+    stopVideo(refName) {
+      const video = refName
+      video.pause()
+      video.currentTime = 0
+    }
+  }
 };
 </script>
 

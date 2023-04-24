@@ -21,7 +21,21 @@
 <script>
 export default {
   name: 'LessonItem',
-  props: ['lesson', 'selectedLesson'],
+  props: {
+    lesson: {
+      required: true,
+      type: Object
+    },
+    selectedLesson: {
+      required: false,
+      type: Object,
+      default() {
+        return {
+          title: 'Hello'
+        }
+      }
+    }
+  },
   computed: {
     isLessonLocked () {
       return this.lesson.status === 'locked'

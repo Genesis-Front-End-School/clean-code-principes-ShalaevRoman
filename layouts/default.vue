@@ -64,7 +64,11 @@ export default {
     }
   },
   async fetch() {
-    await this.$store.dispatch('courses/getToken')
+    try {
+      await this.$store.dispatch('courses/getToken')
+    } catch (error) {
+      window.$nuxt.error(error)
+    }
   },
   computed: {
     getYear() {

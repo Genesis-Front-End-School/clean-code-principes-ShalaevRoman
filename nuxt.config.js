@@ -47,6 +47,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/dotenv'
   ],
   axios: {
     baseURL: process.env.API_URL,
@@ -60,13 +61,12 @@ export default {
   },
   proxy: {
     '/api/': {
-      target: 'http://api.wisey.app',
+      target: process.env.API_URL,
       changeOrigin: true,
     },
   },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: true,
       themes: {
@@ -82,7 +82,6 @@ export default {
       },
     },
   },
-
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 }

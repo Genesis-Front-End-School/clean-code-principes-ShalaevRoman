@@ -1,3 +1,5 @@
+import coursesApi from '@/services/courses'
+import authApi from '@/services/auth'
 export const state = () => ({
   isShowPreloader: false,
   allCourses: '',
@@ -22,67 +24,19 @@ export const mutations = {
 
 export const actions = {
   async getCourses({ commit, state }) {
-    try {
-      const response = await this.$axios.get('/api/v1/core/preview-courses', {
-        headers: {
-          Authorization: `Bearer ${state.token}`
-        }
-      })
-      const { courses } = response.data
-      commit('SET_COURSES', courses)
-    } catch (error) {
-      if (error.response) {
-        // Обробка помилки з API
-      } else if (error.request) {
-        // Обробка помилки мережі
-      } else {
-        // Інші помилки
-      }
-    }
+    const api = coursesApi(this.$axios, state.token)
+    const courses = await api.getCourses()
+    commit('SET_COURSES', courses)
   },
   async getCourseById({ commit, state }, courseId) {
-    try {
-      const response = await this.$axios.$get(`/api/v1/core/preview-courses/${courseId}`, {
-        headers: {
-          Authorization: `Bearer ${state.token}`
-        }
-      })
-      commit('SET_SELECTED_COURSE', response)
-    } catch (error) {
-      if (error.response) {
-        // Обробка помилки з API
-      } else if (error.request) {
-        // Обробка помилки мережі
-      } else {
-        // Інші помилки
-      }
-    }
+    const api = coursesApi(this.$axios, state.token)
+    const course = await api.getCourseById(courseId)
+    commit('SET_SELECTED_COURSE', course)
   },
   async getToken({ commit }) {
-    try {
-      const tokenFromLocalStorage = localStorage.getItem('token')
-      if (tokenFromLocalStorage) {
-        commit('SET_TOKEN', tokenFromLocalStorage)
-      } else {
-        const response = await this.$axios.get('/api/v1/auth/anonymous?platform=subscriptions')
-        const { token } = response.data
-        commit('SET_TOKEN', token)
-        localStorage.setItem('token', token)
-      }
-    } catch (error) {
-      if (error.response) {
-        // Обробка помилки з API
-      } else if (error.request) {
-        // Обробка помилки мережі
-      } else {
-        // Інші помилки
-      }
-    }
-  },
-  logout({ commit }) {
-    commit('CLEAR_TOKEN')
-    localStorage.removeItem('token')
-  },
+    const token = await authApi(this.$axios).getToken()
+    commit('SET_TOKEN', token)
+  }
 }
 
 export const getters = {
