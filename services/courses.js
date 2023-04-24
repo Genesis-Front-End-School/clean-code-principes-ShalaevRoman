@@ -1,7 +1,7 @@
-export default ($axios, token) => ({
-  async getCourses() {
+export default (client, token, path) => ({
+  async getAll() {
     try {
-      const response = await $axios.get(process.env.API_COURSES, {
+      const response = await client.get(path, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -13,9 +13,9 @@ export default ($axios, token) => ({
     }
   },
 
-  async getCourseById(courseId) {
+  async getById(courseId) {
     try {
-      return await $axios.$get(process.env.API_COURSES + courseId, {
+      return await client.$get(path + courseId, {
         headers: {
           Authorization: `Bearer ${token}`
         }

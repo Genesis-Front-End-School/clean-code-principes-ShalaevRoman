@@ -1,11 +1,11 @@
-export default ($axios) => {
+export default (client) => {
   const getToken = async () => {
     try {
       const tokenFromLocalStorage = localStorage.getItem('token')
       if (tokenFromLocalStorage) {
         return tokenFromLocalStorage
       } else {
-        const response = await $axios.get(process.env.API_AUTH)
+        const response = await client.get(process.env.API_AUTH)
         const { token } = response.data
         localStorage.setItem('token', token)
         return token

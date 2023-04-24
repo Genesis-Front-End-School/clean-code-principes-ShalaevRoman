@@ -24,13 +24,13 @@ export const mutations = {
 
 export const actions = {
   async getCourses({ commit, state }) {
-    const api = coursesApi(this.$axios, state.token)
-    const courses = await api.getCourses()
+    const api = coursesApi(this.$axios, state.token, process.env.API_COURSES)
+    const courses = await api.getAll()
     commit('SET_COURSES', courses)
   },
   async getCourseById({ commit, state }, courseId) {
-    const api = coursesApi(this.$axios, state.token)
-    const course = await api.getCourseById(courseId)
+    const api = coursesApi(this.$axios, state.token, process.env.API_COURSES)
+    const course = await api.getById(courseId)
     commit('SET_SELECTED_COURSE', course)
   },
   async getToken({ commit }) {
