@@ -11,10 +11,9 @@ export default {
         await store.dispatch('courses/getToken')
       }
       await store.dispatch('courses/getCourses')
-    } catch(error) {
+    } catch (error) {
       window.$nuxt.error(error)
     }
-
   }
 }
 </script>

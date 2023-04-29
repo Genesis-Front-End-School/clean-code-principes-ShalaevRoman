@@ -1,9 +1,13 @@
 <template>
-  <video ref="videoPlayer" class="videoPlayer" controls></video>
+  <video
+    ref="videoPlayer"
+    class="videoPlayer"
+    controls
+  />
 </template>
 
 <script>
-import Hls from 'hls.js'
+import Hls, { Events } from 'hls.js'
 
 export default {
   name: 'VideoPlayer',
@@ -11,7 +15,7 @@ export default {
     selectedLesson: {
       required: false,
       type: Object,
-      default() {
+      default () {
         return {
           title: 'Hello User'
         }
@@ -20,7 +24,7 @@ export default {
     lessonProgress: {
       required: false,
       type: Number,
-      default() {
+      default () {
         return 0
       }
     }
@@ -34,17 +38,17 @@ export default {
     }
   },
   methods: {
-    playLesson() {
+    playLesson () {
       const video = this.$refs.videoPlayer
 
       if (Hls.isSupported()) {
         const hls = new Hls()
-        hls.loadSource(this.selectedLesson.link )
+        hls.loadSource(this.selectedLesson.link)
         hls.attachMedia(video)
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        hls.on(Events.MANIFEST_PARSED, () => {
           video.currentTime = this.selectedLesson.duration * this.lessonProgress / 100
           video.play()
-        });
+        })
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = this.selectedLesson.link
         video.addEventListener('loadedmetadata', () => {
@@ -54,11 +58,11 @@ export default {
       video.addEventListener('timeupdate', () => {
         const progress = Math.floor((video.currentTime / video.duration) * 100)
         if (!Number.isNaN(progress)) {
-          localStorage.setItem( this.selectedLesson.id, progress)
+          localStorage.setItem(this.selectedLesson.id, progress)
         }
       })
-    },
-  },
+    }
+  }
 }
 </script>
 

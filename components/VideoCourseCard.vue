@@ -9,8 +9,7 @@
         class="cursor-pointer video-player pa-5"
         @mouseenter="playVideo($refs[refName], link)"
         @mouseout="stopVideo($refs[refName])"
-      >
-      </video>
+      />
     </div>
     <v-avatar
       v-if="status === 'launched'"
@@ -18,7 +17,9 @@
       color="white"
       size="xs"
     >
-      <v-icon color="success">mdi-check-bold</v-icon>
+      <v-icon color="success">
+        mdi-check-bold
+      </v-icon>
     </v-avatar>
     <v-card-title class="pt-4 d-flex flex-column">
       <div class="headline font-weight-bold mb-2">
@@ -41,7 +42,7 @@
           color="primary"
           :readonly="true"
           :size="24"
-        ></v-rating>
+        />
         <div class="subtitle-2 font-weight-bold">
           {{ lessonsCount }} lessons
         </div>
@@ -81,28 +82,28 @@ export default {
     title: {
       require: true,
       type: String,
-      default() {
+      default () {
         return 'Title'
       }
     },
     skills: {
       require: true,
       type: Array,
-      default() {
+      default () {
         return ['some skills']
       }
     },
     rating: {
       require: true,
       type: Number,
-      default() {
+      default () {
         return 0
       }
     },
     lessonsCount: {
       require: true,
       type: Number,
-      default() {
+      default () {
         return 0
       }
     },
@@ -122,7 +123,7 @@ export default {
   computed: {
     imgPath () {
       return this.previewImageLink + '/cover.webp'
-    },
+    }
   }
 }
 </script>

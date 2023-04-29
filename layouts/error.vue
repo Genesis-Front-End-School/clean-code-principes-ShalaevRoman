@@ -6,7 +6,9 @@
     <p>
       {{ message }}
     </p>
-    <NuxtLink to="/"> Home page </NuxtLink>
+    <NuxtLink to="/">
+      Home page
+    </NuxtLink>
   </v-app>
 </template>
 
@@ -17,23 +19,23 @@ export default {
   props: {
     error: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
-  data() {
+  data () {
     return {
       title: this.getErrorTitle(this.error.statusCode),
       message: this.error.message
     }
   },
-  head() {
+  head () {
     const title = this.getErrorTitle(this.error.statusCode)
     return {
-      title,
+      title
     }
   },
   methods: {
-    getErrorTitle(code) {
+    getErrorTitle (code) {
       switch (code) {
         case 404:
           return '404 Not Found sorry)'

@@ -29,7 +29,7 @@ export default {
     selectedLesson: {
       required: false,
       type: Object,
-      default() {
+      default () {
         return {
           title: 'Hello'
         }

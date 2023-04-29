@@ -1,5 +1,5 @@
 export default (client, token, path) => ({
-  async getAll() {
+  async getAll () {
     try {
       const response = await client.get(path, {
         headers: {
@@ -13,7 +13,7 @@ export default (client, token, path) => ({
     }
   },
 
-  async getById(courseId) {
+  async getById (courseId) {
     try {
       return await client.$get(path + courseId, {
         headers: {
@@ -23,5 +23,5 @@ export default (client, token, path) => ({
     } catch (error) {
       throw error.response.data
     }
-  },
+  }
 })

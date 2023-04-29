@@ -1,14 +1,13 @@
 import coursesApi from '@/services/courses'
 import authApi from '@/services/auth'
 export const state = () => ({
-  isShowPreloader: false,
   allCourses: '',
   selectedCourse: null,
   token: ''
 })
 
 export const mutations = {
-  SET_SELECTED_COURSE(state, payload) {
+  SET_SELECTED_COURSE (state, payload) {
     state.selectedCourse = payload
   },
   SET_COURSES (state, payload) {
@@ -23,17 +22,17 @@ export const mutations = {
 }
 
 export const actions = {
-  async getCourses({ commit, state }) {
+  async getCourses ({ commit, state }) {
     const api = coursesApi(this.$axios, state.token, process.env.API_COURSES)
     const courses = await api.getAll()
     commit('SET_COURSES', courses)
   },
-  async getCourseById({ commit, state }, courseId) {
+  async getCourseById ({ commit, state }, courseId) {
     const api = coursesApi(this.$axios, state.token, process.env.API_COURSES)
     const course = await api.getById(courseId)
     commit('SET_SELECTED_COURSE', course)
   },
-  async getToken({ commit }) {
+  async getToken ({ commit }) {
     const token = await authApi(this.$axios).getToken()
     commit('SET_TOKEN', token)
   }

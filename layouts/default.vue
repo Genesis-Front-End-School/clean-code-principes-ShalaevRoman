@@ -63,7 +63,7 @@ export default {
       title: 'Genesis_learning_app'
     }
   },
-  async fetch() {
+  async fetch () {
     try {
       await this.$store.dispatch('courses/getToken')
     } catch (error) {
@@ -71,14 +71,14 @@ export default {
     }
   },
   computed: {
-    getYear() {
+    getYear () {
       return new Date().getFullYear()
     }
   },
   methods: {
-    changeDrawerState() {
+    changeDrawerState () {
       this.drawer = !this.drawer
     }
-  },
+  }
 }
 </script>

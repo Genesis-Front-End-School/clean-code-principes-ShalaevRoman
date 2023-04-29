@@ -13,7 +13,7 @@
           <v-card-text>
             <v-list dense>
               <v-subheader>Lessons</v-subheader>
-              <v-divider></v-divider>
+              <v-divider />
               <v-list-item-group>
                 <LessonItem
                   v-for="lesson in selectedCourse.lessons"
@@ -44,7 +44,9 @@
             >
               {{ lessonProgress }}%
             </v-progress-circular>
-            <v-card-subtitle v-if="selectedLesson" class="secondary--text">{{ selectedLesson.title }} </v-card-subtitle>
+            <v-card-subtitle v-if="selectedLesson" class="secondary--text">
+              {{ selectedLesson.title }}
+            </v-card-subtitle>
           </v-card-text>
         </v-card>
       </v-col>
@@ -54,12 +56,12 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       selectedLesson: null,
       lessonProgress: 0,
       isPlay: true
-    };
+    }
   },
   async fetch ({ params, store }) {
     try {
@@ -67,33 +69,32 @@ export default {
     } catch (error) {
       window.$nuxt.error(error)
     }
-
   },
   computed: {
-    selectedCourse() {
+    selectedCourse () {
       return this.$store.state.courses.selectedCourse
     },
-    availableLesson() {
+    availableLesson () {
       return this.selectedCourse.lessons.find(lesson => lesson.status === 'unlocked')
-    },
+    }
   },
   watch: {
     selectedLesson () {
       this.getProgress()
     }
   },
-  mounted() {
+  mounted () {
     this.selectedLesson = this.availableLesson
     this.getProgress()
   },
   methods: {
-    onSelectLesson(lesson) {
+    onSelectLesson (lesson) {
       this.selectedLesson = lesson
     },
-    getProgress() {
+    getProgress () {
       const lastProgress = localStorage.getItem(this.selectedLesson.id)
       this.lessonProgress = lastProgress ? parseInt(lastProgress) : 0
     }
   }
-};
+}
 </script>

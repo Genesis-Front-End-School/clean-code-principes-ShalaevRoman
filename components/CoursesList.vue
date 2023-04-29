@@ -28,46 +28,46 @@
         v-model="currentPage"
         :total-visible="5"
         :length="paginationLength"
-      ></v-pagination>
+      />
     </v-container>
   </div>
 </template>
 
 <script>
-import Hls from 'hls.js'
+import Hls, { Events } from 'hls.js'
 
 export default {
   name: 'CoursesList',
-  data() {
+  data () {
     return {
       currentPage: 1,
-      itemsPerPage: 10,
-    };
+      itemsPerPage: 10
+    }
   },
   computed: {
-    allCourses() {
+    allCourses () {
       return this.$store.state.courses.allCourses
     },
-    displayedCourses() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.allCourses.slice(start, end);
+    displayedCourses () {
+      const start = (this.currentPage - 1) * this.itemsPerPage
+      const end = start + this.itemsPerPage
+      return this.allCourses.slice(start, end)
     },
-    paginationLength() {
+    paginationLength () {
       return Math.ceil(this.allCourses.length / this.itemsPerPage)
     }
   },
   methods: {
-    playVideo(refName, link) {
+    playVideo (refName, link) {
       const video = refName
 
       if (Hls.isSupported()) {
         const hls = new Hls()
         hls.loadSource(link)
         hls.attachMedia(video)
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        hls.on(Events.MANIFEST_PARSED, () => {
           video.play()
-        });
+        })
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = link
         video.addEventListener('loadedmetadata', () => {
@@ -75,13 +75,13 @@ export default {
         })
       }
     },
-    stopVideo(refName) {
+    stopVideo (refName) {
       const video = refName
       video.pause()
       video.currentTime = 0
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
