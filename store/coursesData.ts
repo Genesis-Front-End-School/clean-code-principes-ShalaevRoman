@@ -1,32 +1,46 @@
 import { getterTree, mutationTree, actionTree } from 'typed-vuex'
+import authApi from '~/services/auth/auth'
+import coursesApi from '~/services/courses/courses'
+import { State } from '~/store/stateType'
+import { CourseItem } from '~/services/api.types'
 
-export const state = () => ({
-  token: '',
-  password: ''
+export const state = (): State => ({
+  token: null,
+  allCourses: [],
+  selectedCourse: null
 })
 
 export const getters = getterTree(state, {
   token: state => state.token,
-  password: state => state.password
+  allCourses: state => state.allCourses,
+  selectedCourse: state => state.selectedCourse
 })
 
 export const mutations = mutationTree(state, {
   SET_TOKEN: (state, value: string): void => {
     state.token = value
   },
-  SET_PASSWORD: (state, value: string): void => {
-    state.password = value
+  SET_ALL_COURSES: (state, value: CourseItem[]): void => {
+    state.allCourses = value
+  },
+  SET_SELECTED_COURSE: (state, value: CourseItem): void => {
+    state.selectedCourse = value
   }
 })
 
 export const actions = actionTree(
-  { state, getters, mutations },
-  {
-    SET_EMAIL ({ commit }, value: string): void {
-      commit('SET_TOKEN', value)
+  { state, getters, mutations }, {
+    async getToken ({ commit }): Promise<void> {
+      const token = await authApi().getToken()
+      commit('SET_TOKEN', token)
     },
-    SET_PASSWORD ({ commit }, value: string): void {
-      commit('SET_PASSWORD', value)
+    async getCourses ({ commit, state }): Promise<void> {
+      const allCourses = await coursesApi(state.token).getAll()
+      commit('SET_ALL_COURSES', allCourses)
+    },
+    async getCourseById ({ commit, state }, courseId): Promise<void> {
+      const course = await coursesApi(state.token).getById(courseId)
+      commit('SET_SELECTED_COURSE', course)
     }
   }
 )

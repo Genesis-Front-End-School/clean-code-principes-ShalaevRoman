@@ -3,7 +3,7 @@
     <h1>
       {{ title }}
     </h1>
-    <p>
+    <p class="red--text">
       {{ message }}
     </p>
     <NuxtLink to="/">
@@ -25,7 +25,7 @@ export default {
   data () {
     return {
       title: this.getErrorTitle(this.error.statusCode),
-      message: this.error.message
+      message: this.error.message || 'An error occurred'
     }
   },
   head () {

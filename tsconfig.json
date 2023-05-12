@@ -25,7 +25,9 @@
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@nuxtjs/axios"
+      "@nuxtjs/axios",
+      "@nuxtjs/composition-api/module",
+      "@nuxtjs/dotenv"
     ]
   },
   "exclude": [

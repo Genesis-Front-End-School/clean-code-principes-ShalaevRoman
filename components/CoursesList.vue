@@ -10,15 +10,7 @@
           lg="4"
         >
           <VideoCourseCard
-            :course-id="course.id"
-            :link="course.meta.courseVideoPreview.link"
-            :status="course.status"
-            :title="course.title"
-            :skills="course.meta.skills"
-            :rating="course.rating"
-            :lessons-count="course.lessonsCount"
-            :preview-image-link="course.previewImageLink"
-            :ref-name="course.id"
+            :course="course"
             :play-video="playVideo"
             :stop-video="stopVideo"
           />
@@ -33,10 +25,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Hls, { Events } from 'hls.js'
+import { defineComponent } from '@nuxtjs/composition-api'
 
-export default {
+export default defineComponent({
   name: 'CoursesList',
   data () {
     return {
@@ -46,7 +39,8 @@ export default {
   },
   computed: {
     allCourses () {
-      return this.$store.state.courses.allCourses
+      console.log(this.$accessor.coursesData.allCourses)
+      return this.$accessor.coursesData.allCourses
     },
     displayedCourses () {
       const start = (this.currentPage - 1) * this.itemsPerPage
@@ -58,7 +52,7 @@ export default {
     }
   },
   methods: {
-    playVideo (refName, link) {
+    playVideo (refName: HTMLVideoElement, link: string) {
       const video = refName
 
       if (Hls.isSupported()) {
@@ -75,13 +69,13 @@ export default {
         })
       }
     },
-    stopVideo (refName) {
+    stopVideo (refName: HTMLVideoElement) {
       const video = refName
       video.pause()
       video.currentTime = 0
     }
   }
-}
+})
 </script>
 
 <style lang="scss">
