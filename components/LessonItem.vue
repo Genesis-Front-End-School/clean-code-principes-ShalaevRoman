@@ -3,7 +3,9 @@
     :disabled="isLessonLocked"
     @click="chooseLesson()"
   >
-    <v-list-item-title>{{ lesson.title }}</v-list-item-title>
+    <v-list-item-title>
+      {{ lesson.title }}
+    </v-list-item-title>
     <v-list-item-action>
       <v-icon
         v-if="lessonStatus"
@@ -18,21 +20,21 @@
   </v-list-item>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { Lesson } from '@/services/api.types'
+export default defineComponent({
   name: 'LessonItem',
   props: {
     lesson: {
       required: true,
-      type: Object
+      type: Object as PropType<Lesson>
     },
     selectedLesson: {
       required: false,
-      type: Object,
+      type: Object as PropType<Lesson>,
       default () {
-        return {
-          title: 'Hello'
-        }
+        return null
       }
     }
   },
@@ -52,9 +54,5 @@ export default {
       this.$emit('onSelectLesson', this.lesson)
     }
   }
-}
+})
 </script>
-
-<style scoped lang="scss">
-
-</style>

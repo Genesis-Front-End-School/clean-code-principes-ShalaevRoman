@@ -6,19 +6,19 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import Hls, { Events } from 'hls.js'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { Lesson } from '@/services/api.types'
 
-export default {
+export default defineComponent({
   name: 'VideoPlayer',
   props: {
     selectedLesson: {
       required: false,
-      type: Object,
+      type: Object as PropType<Lesson>,
       default () {
-        return {
-          title: 'Hello User'
-        }
+        return null
       }
     },
     lessonProgress: {
@@ -39,9 +39,9 @@ export default {
   },
   methods: {
     playLesson () {
-      const video = this.$refs.videoPlayer
+      const video = this.$refs.videoPlayer as HTMLMediaElement
 
-      if (Hls.isSupported()) {
+      if (Hls.isSupported() && video) {
         const hls = new Hls()
         hls.loadSource(this.selectedLesson.link)
         hls.attachMedia(video)
@@ -56,14 +56,14 @@ export default {
         })
       }
       video.addEventListener('timeupdate', () => {
-        const progress = Math.floor((video.currentTime / video.duration) * 100)
+        const progress: number = Math.floor((video.currentTime / video.duration) * 100)
         if (!Number.isNaN(progress)) {
-          localStorage.setItem(this.selectedLesson.id, progress)
+          localStorage.setItem(this.selectedLesson.id, progress.toString())
         }
       })
     }
   }
-}
+})
 </script>
 
 <style scoped>

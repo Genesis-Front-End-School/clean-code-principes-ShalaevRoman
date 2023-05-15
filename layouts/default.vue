@@ -42,11 +42,17 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+interface Data {
+  drawer: boolean
+  items: Object[],
+  title: string
+}
 
-export default {
+export default defineComponent({
   name: 'DefaultLayout',
-  data () {
+  data (): Data {
     return {
       drawer: false,
       items: [
@@ -63,13 +69,6 @@ export default {
       title: 'Genesis_learning_app'
     }
   },
-  async fetch () {
-    try {
-      await this.$store.dispatch('courses/getToken')
-    } catch (error) {
-      window.$nuxt.error(error)
-    }
-  },
   computed: {
     getYear () {
       return new Date().getFullYear()
@@ -80,5 +79,5 @@ export default {
       this.drawer = !this.drawer
     }
   }
-}
+})
 </script>

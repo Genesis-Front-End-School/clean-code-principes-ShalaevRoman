@@ -29,9 +29,14 @@
 import Hls, { Events } from 'hls.js'
 import { defineComponent } from '@nuxtjs/composition-api'
 
+interface Data {
+  currentPage: number
+  itemsPerPage: number
+}
+
 export default defineComponent({
   name: 'CoursesList',
-  data () {
+  data (): Data {
     return {
       currentPage: 1,
       itemsPerPage: 10
@@ -39,7 +44,6 @@ export default defineComponent({
   },
   computed: {
     allCourses () {
-      console.log(this.$accessor.coursesData.allCourses)
       return this.$accessor.coursesData.allCourses
     },
     displayedCourses () {
@@ -77,7 +81,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss">
-
-</style>

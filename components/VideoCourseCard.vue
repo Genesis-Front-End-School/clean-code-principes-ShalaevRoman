@@ -70,11 +70,6 @@ export default defineComponent({
       type: Function
     }
   },
-  data () {
-    return {
-      nameElement: 'videoPlayer'
-    }
-  },
   computed: {
     imgPath () {
       return this.course.previewImageLink + '/cover.webp'

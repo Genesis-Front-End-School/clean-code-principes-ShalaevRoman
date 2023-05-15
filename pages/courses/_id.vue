@@ -54,28 +54,32 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  data () {
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+import { Lesson } from '@/services/api.types'
+
+interface Data {
+  selectedLesson: Lesson | null
+  lessonProgress: number
+  isPlay: boolean
+}
+export default defineComponent({
+  data (): Data {
     return {
       selectedLesson: null,
       lessonProgress: 0,
       isPlay: true
     }
   },
-  async fetch ({ params, store }) {
-    try {
-      await store.dispatch('courses/getCourseById', params.id)
-    } catch (error) {
-      window.$nuxt.error(error)
-    }
+  async fetch ({ params, app }) {
+    await app.$accessor.coursesData.getCourseById(params.id)
   },
   computed: {
     selectedCourse () {
-      return this.$store.state.courses.selectedCourse
+      return this.$accessor.coursesData.selectedCourse
     },
     availableLesson () {
-      return this.selectedCourse.lessons.find(lesson => lesson.status === 'unlocked')
+      return this.selectedCourse?.lessons.find(lesson => lesson.status === 'unlocked') || null
     }
   },
   watch: {
@@ -88,13 +92,13 @@ export default {
     this.getProgress()
   },
   methods: {
-    onSelectLesson (lesson) {
+    onSelectLesson (lesson: Lesson) {
       this.selectedLesson = lesson
     },
     getProgress () {
-      const lastProgress = localStorage.getItem(this.selectedLesson.id)
+      const lastProgress = this.selectedLesson ? localStorage.getItem(this.selectedLesson.id) : 0
       this.lessonProgress = lastProgress ? parseInt(lastProgress) : 0
     }
   }
-}
+})
 </script>
