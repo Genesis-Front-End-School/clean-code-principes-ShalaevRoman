@@ -56,15 +56,10 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { Lesson } from '@/services/api.types'
-
-interface Data {
-  selectedLesson: Lesson | null
-  lessonProgress: number
-  isPlay: boolean
-}
+import { Lesson, CourseItem } from '@/services/api.types'
+import { CourseByIdData } from '~/types/typesForComponentData'
 export default defineComponent({
-  data (): Data {
+  data (): CourseByIdData {
     return {
       selectedLesson: null,
       lessonProgress: 0,
@@ -75,27 +70,26 @@ export default defineComponent({
     await app.$accessor.coursesData.getCourseById(params.id)
   },
   computed: {
-    selectedCourse () {
+    selectedCourse (): CourseItem | null {
       return this.$accessor.coursesData.selectedCourse
     },
-    availableLesson () {
+    availableLesson (): Lesson | null {
       return this.selectedCourse?.lessons.find(lesson => lesson.status === 'unlocked') || null
     }
   },
   watch: {
-    selectedLesson () {
+    selectedLesson (): void {
       this.getProgress()
     }
   },
-  mounted () {
+  mounted (): void {
     this.selectedLesson = this.availableLesson
-    this.getProgress()
   },
   methods: {
-    onSelectLesson (lesson: Lesson) {
+    onSelectLesson (lesson: Lesson): void {
       this.selectedLesson = lesson
     },
-    getProgress () {
+    getProgress (): void {
       const lastProgress = this.selectedLesson ? localStorage.getItem(this.selectedLesson.id) : 0
       this.lessonProgress = lastProgress ? parseInt(lastProgress) : 0
     }

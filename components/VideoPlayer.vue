@@ -17,28 +17,24 @@ export default defineComponent({
     selectedLesson: {
       required: false,
       type: Object as PropType<Lesson>,
-      default () {
-        return null
-      }
+      default: null
     },
     lessonProgress: {
       required: false,
       type: Number,
-      default () {
-        return 0
-      }
+      default: 0
     }
   },
   watch: {
-    selectedLesson () {
+    selectedLesson (): void {
       this.playLesson()
     },
-    lessonProgress () {
+    lessonProgress (): void {
       this.playLesson()
     }
   },
   methods: {
-    playLesson () {
+    playLesson (): void {
       const video = this.$refs.videoPlayer as HTMLMediaElement
 
       if (Hls.isSupported() && video) {
@@ -55,8 +51,11 @@ export default defineComponent({
           video.play()
         })
       }
-      video.addEventListener('timeupdate', () => {
-        const progress: number = Math.floor((video.currentTime / video.duration) * 100)
+      this.timeUpdate(video)
+    },
+    timeUpdate (refItem: HTMLMediaElement): void {
+      refItem.addEventListener('timeupdate', () => {
+        const progress: number = Math.floor((refItem.currentTime / refItem.duration) * 100)
         if (!Number.isNaN(progress)) {
           localStorage.setItem(this.selectedLesson.id, progress.toString())
         }

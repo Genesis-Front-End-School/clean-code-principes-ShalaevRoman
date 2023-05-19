@@ -8,7 +8,7 @@
     </v-list-item-title>
     <v-list-item-action>
       <v-icon
-        v-if="lessonStatus"
+        v-if="!isLessonLocked"
         :color="colorForButton"
       >
         mdi-play-circle
@@ -32,25 +32,20 @@ export default defineComponent({
     },
     selectedLesson: {
       required: false,
-      type: Object as PropType<Lesson>,
-      default () {
-        return null
-      }
+      type: Object as PropType<Lesson | null>,
+      default: null
     }
   },
   computed: {
-    isLessonLocked () {
+    isLessonLocked (): boolean {
       return this.lesson.status === 'locked'
     },
-    lessonStatus () {
-      return this.lesson.status === 'unlocked'
-    },
-    colorForButton () {
+    colorForButton (): string {
       return this.selectedLesson === this.lesson ? '#00E676' : 'gray'
     }
   },
   methods: {
-    chooseLesson () {
+    chooseLesson (): void {
       this.$emit('onSelectLesson', this.lesson)
     }
   }

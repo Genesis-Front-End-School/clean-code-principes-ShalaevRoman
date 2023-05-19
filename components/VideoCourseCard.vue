@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-5" :to="`/courses/${course.id}`">
+  <v-card class="mb-5" :to="getPath">
     <div class="video-wrapper">
       <video
         :ref="course.id"
@@ -12,7 +12,7 @@
       />
     </div>
     <v-avatar
-      v-if="course.status === 'launched'"
+      v-if="isLaunched"
       class="mt-2 ml-2"
       color="white"
       size="xs"
@@ -29,7 +29,7 @@
         <ul>
           <li
             v-for="(skill, i) in course.skills"
-            :key="i + Math.random()"
+            :key="i"
           >
             {{ skill }}
           </li>
@@ -71,8 +71,14 @@ export default defineComponent({
     }
   },
   computed: {
-    imgPath () {
+    imgPath (): string {
       return this.course.previewImageLink + '/cover.webp'
+    },
+    isLaunched (): boolean {
+      return this.course.status === 'launched'
+    },
+    getPath (): string {
+      return `/courses/${this.course.id}`
     }
   }
 })

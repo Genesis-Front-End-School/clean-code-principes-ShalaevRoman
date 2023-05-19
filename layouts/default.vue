@@ -44,15 +44,10 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-interface Data {
-  drawer: boolean
-  items: Object[],
-  title: string
-}
-
+import { DefaultLayoutData } from '~/types/typesForComponentData'
 export default defineComponent({
   name: 'DefaultLayout',
-  data (): Data {
+  data (): DefaultLayoutData {
     return {
       drawer: false,
       items: [
@@ -70,12 +65,12 @@ export default defineComponent({
     }
   },
   computed: {
-    getYear () {
+    getYear (): number {
       return new Date().getFullYear()
     }
   },
   methods: {
-    changeDrawerState () {
+    changeDrawerState (): void {
       this.drawer = !this.drawer
     }
   }

@@ -1,32 +1,15 @@
-import axios from 'axios'
+import createHttpClient from '../httpClient'
 import { CoursesApi } from '~/services/courses/types'
-import { Token } from '~/services/api.types'
-import errorHandler from '~/utils/errorHandler'
-const coursesApi = (token: Token): CoursesApi => {
+const coursesApi = (): CoursesApi => {
+  const httpClient = createHttpClient()
   const getAll = async () => {
-    try {
-      const courses = await axios.get(process.env.API_COURSES || '', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      return courses.data.courses
-    } catch (err: unknown) {
-      errorHandler(err)
-    }
+    const courses = await httpClient.get(process.env.API_COURSES || '')
+    return courses.data.courses
   }
 
   const getById = async (id: string) => {
-    try {
-      const course = await axios.get(process.env.API_COURSES + id, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      return course.data
-    } catch (err: unknown) {
-      errorHandler(err)
-    }
+    const course = await httpClient.get(process.env.API_COURSES + id)
+    return course.data
   }
 
   return {

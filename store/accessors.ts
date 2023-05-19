@@ -1,5 +1,5 @@
 import { getAccessorType } from 'typed-vuex'
-import * as coursesData from '@/store/coursesData'
+import * as coursesData from '~/store/coursesData'
 
 const initialStore = () => ({
   modules: {

@@ -13,19 +13,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { AxiosError } from 'axios'
+
 export default defineComponent({
   name: 'EmptyLayout',
   layout: 'empty',
   props: {
     error: {
-      type: Object,
-      default: null
+      required: true,
+      type: Object as PropType<AxiosError>
     }
   },
   computed: {
     title (): string {
-      return this.getErrorTitle(this.error.statusCode)
+      const status = this.error.response?.status || 0
+      return this.getErrorTitle(status)
     },
     message (): string {
       return this.error.message || 'An error occurred'

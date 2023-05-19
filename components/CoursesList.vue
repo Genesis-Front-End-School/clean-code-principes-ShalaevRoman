@@ -28,36 +28,33 @@
 <script lang="ts">
 import Hls, { Events } from 'hls.js'
 import { defineComponent } from '@nuxtjs/composition-api'
-
-interface Data {
-  currentPage: number
-  itemsPerPage: number
-}
+import { CourseItem } from '~/services/api.types'
+import { CoursesListData } from '~/types/typesForComponentData'
 
 export default defineComponent({
   name: 'CoursesList',
-  data (): Data {
+  data (): CoursesListData {
     return {
       currentPage: 1,
       itemsPerPage: 10
     }
   },
   computed: {
-    allCourses () {
+    allCourses (): CourseItem[] {
       return this.$accessor.coursesData.allCourses
     },
-    displayedCourses () {
+    displayedCourses (): CourseItem[] {
       const start = (this.currentPage - 1) * this.itemsPerPage
       const end = start + this.itemsPerPage
       return this.allCourses.slice(start, end)
     },
-    paginationLength () {
+    paginationLength (): number {
       return Math.ceil(this.allCourses.length / this.itemsPerPage)
     }
   },
   methods: {
-    playVideo (refName: HTMLVideoElement, link: string) {
-      const video = refName
+    playVideo (refItem: HTMLVideoElement, link: string): void {
+      const video = refItem
 
       if (Hls.isSupported()) {
         const hls = new Hls()
@@ -73,7 +70,7 @@ export default defineComponent({
         })
       }
     },
-    stopVideo (refName: HTMLVideoElement) {
+    stopVideo (refName: HTMLVideoElement): void {
       const video = refName
       video.pause()
       video.currentTime = 0

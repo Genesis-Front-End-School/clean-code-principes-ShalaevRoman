@@ -34,12 +34,12 @@ export const actions = actionTree(
       const token = await authApi().getToken()
       commit('SET_TOKEN', token)
     },
-    async getCourses ({ commit, state }): Promise<void> {
-      const allCourses = await coursesApi(state.token).getAll()
+    async getCourses ({ commit }): Promise<void> {
+      const allCourses = await coursesApi().getAll()
       commit('SET_ALL_COURSES', allCourses)
     },
-    async getCourseById ({ commit, state }, courseId): Promise<void> {
-      const course = await coursesApi(state.token).getById(courseId)
+    async getCourseById ({ commit }, courseId): Promise<void> {
+      const course = await coursesApi().getById(courseId)
       commit('SET_SELECTED_COURSE', course)
     }
   }
