@@ -26,10 +26,11 @@
         {{ course.title }}
       </div>
       <div class="grey--text font-weight-light mb-3 skills-wrapper">
-        <ul>
+        <ul class="skills-list">
           <li
             v-for="(skill, i) in course.skills"
             :key="i"
+            class="skills-list__item"
           >
             {{ skill }}
           </li>
