@@ -17,7 +17,7 @@ describe('VideoCourseCard', () => {
 
   test('displays the correct course title', () => {
     const title = wrapper.find('.headline')
-    expect(title.text()).toBe('The Power of Self-Discipline: How to Stay on Track')
+    expect(title.text()).toBe(wrapper.props().course.title)
   })
 
   test('displays the course rating and lessons count', () => {

@@ -16,7 +16,7 @@ describe('LessonItem', () => {
 
   test('displays the correct lesson title', () => {
     const title = wrapper.findComponent({ name: 'v-list-item-title' })
-    expect(title.text()).toBe('Why short-term gains aren’t worth it')
+    expect(title.text()).toBe(wrapper.props().lesson.title)
   })
 
   test('renders the play button when the lesson is not locked', async () => {

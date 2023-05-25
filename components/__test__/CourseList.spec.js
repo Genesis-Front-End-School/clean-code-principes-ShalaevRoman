@@ -41,13 +41,7 @@ describe('CoursesList', () => {
 
     const courseCards = wrapper.findAllComponents(VideoCourseCard)
 
-    expect(courseCards.at(0).props('course')).toEqual({
-      id: '1',
-      title: 'Lack of Motivation & How to Overcome It'
-    })
-    expect(courseCards.at(1).props('course')).toEqual({
-      id: '2',
-      title: 'The Power of Self-Discipline: How to Stay on Track'
-    })
+    expect(courseCards.at(0).props('course')).toEqual(courses[0])
+    expect(courseCards.at(1).props('course')).toEqual(courses[1])
   })
 })
