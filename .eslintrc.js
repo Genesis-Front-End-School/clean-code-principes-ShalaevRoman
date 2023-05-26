@@ -13,6 +13,7 @@ module.exports = {
     '@nuxtjs/eslint-config-typescript'
   ],
   plugins: [],
+  ignorePatterns: ['dist/', '__mocks__/'],
   // add your custom rules here
   rules: {}
 }
