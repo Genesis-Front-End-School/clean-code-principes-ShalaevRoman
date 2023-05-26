@@ -9,7 +9,7 @@
 <script lang="ts">
 import Hls, { Events } from 'hls.js'
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { Lesson } from '@/services/api.types'
+import { Lesson } from '~/shared/services/api.types'
 
 export default defineComponent({
   name: 'VideoPlayer',

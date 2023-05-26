@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import VideoPlayer from '@/components/VideoPlayer.vue'
+import VideoPlayer from '~/components/VideoPlayer.vue'
 
 describe('VideoPlayer', () => {
   test('should play the lesson when selectedLesson or lessonProgress changes', async () => {

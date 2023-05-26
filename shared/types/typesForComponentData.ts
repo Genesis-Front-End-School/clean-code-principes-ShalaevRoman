@@ -1,4 +1,4 @@
-import { Lesson } from '~/services/api.types'
+import { Lesson } from '~/shared/services/api.types'
 
 type Pages = 'Main' | 'Courses'
 interface MenuItems {

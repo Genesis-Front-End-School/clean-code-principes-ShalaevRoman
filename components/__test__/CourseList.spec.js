@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import CoursesList from '@/components/CoursesList.vue'
-import VideoCourseCard from '@/components/VideoCourseCard.vue'
+import CoursesList from '~/components/CoursesList.vue'
+import VideoCourseCard from '~/components/VideoCourseCard.vue'
 import { Courses } from '~/__mocks__/coursesData'
 
 describe('CoursesList', () => {

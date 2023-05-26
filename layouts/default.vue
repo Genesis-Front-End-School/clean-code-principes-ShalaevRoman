@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { DefaultLayoutData } from '~/types/typesForComponentData'
+import { DefaultLayoutData } from '~/shared/types/typesForComponentData'
 export default defineComponent({
   name: 'DefaultLayout',
   data (): DefaultLayoutData {

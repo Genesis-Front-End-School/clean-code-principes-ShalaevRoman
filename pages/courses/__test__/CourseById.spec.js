@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
 import { Course, Lesson } from '~/__mocks__/coursesData'
-import CourseById from '@/pages/courses/_id.vue'
-import { localStorageMock } from '@/__mocks__/localStorage'
+import CourseById from '~/pages/courses/_id.vue'
+import { localStorageMock } from '~/__mocks__/localStorage'
 
 describe('CourseById', () => {
   beforeEach(() => {

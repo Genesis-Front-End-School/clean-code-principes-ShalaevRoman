@@ -1,6 +1,6 @@
 import createHttpClient from '../httpClient'
-import { AuthApi } from '~/services/auth/types'
-import { Token } from '~/services/api.types'
+import { AuthApi } from '~/shared/services/auth/types'
+import { Token } from '~/shared/services/api.types'
 
 const authApi = (): AuthApi => {
   const httpClient = createHttpClient()

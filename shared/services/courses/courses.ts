@@ -1,5 +1,5 @@
 import createHttpClient from '../httpClient'
-import { CoursesApi } from '~/services/courses/types'
+import { CoursesApi } from '~/shared/services/courses/types'
 const coursesApi = (): CoursesApi => {
   const httpClient = createHttpClient()
   const getAll = async () => {

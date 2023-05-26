@@ -1,8 +1,8 @@
 import { getterTree, mutationTree, actionTree } from 'typed-vuex'
-import authApi from '~/services/auth/auth'
-import coursesApi from '~/services/courses/courses'
+import authApi from '~/shared/services/auth/auth'
+import coursesApi from '~/shared/services/courses/courses'
 import { State } from '~/store/stateType'
-import { CourseItem } from '~/services/api.types'
+import { CourseItem } from '~/shared/services/api.types'
 
 export const state = (): State => ({
   token: null,
