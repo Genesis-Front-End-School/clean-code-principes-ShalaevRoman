@@ -1,34 +1,36 @@
 <template>
-  <v-card class="mb-5" :to="`/courses/${courseId}`">
+  <v-card class="mb-5" :to="getPath">
     <div class="video-wrapper">
       <video
-        :ref="refName"
+        :ref="course.id"
         :poster="imgPath"
         muted
         controls
         class="cursor-pointer video-player pa-5"
-        @mouseenter="playVideo($refs[refName], link)"
-        @mouseout="stopVideo($refs[refName])"
-      >
-      </video>
+        @mouseenter="playVideo($refs[course.id], course.meta.courseVideoPreview.link)"
+        @mouseout="stopVideo($refs[course.id])"
+      />
     </div>
     <v-avatar
-      v-if="status === 'launched'"
+      v-if="isLaunched"
       class="mt-2 ml-2"
       color="white"
       size="xs"
     >
-      <v-icon color="success">mdi-check-bold</v-icon>
+      <v-icon color="success">
+        mdi-check-bold
+      </v-icon>
     </v-avatar>
     <v-card-title class="pt-4 d-flex flex-column">
       <div class="headline font-weight-bold mb-2">
-        {{ title }}
+        {{ course.title }}
       </div>
       <div class="grey--text font-weight-light mb-3 skills-wrapper">
-        <ul>
+        <ul class="skills-list">
           <li
-            v-for="(skill, i) in skills"
-            :key="i + Math.random()"
+            v-for="(skill, i) in course.skills"
+            :key="i"
+            class="skills-list__item"
           >
             {{ skill }}
           </li>
@@ -36,24 +38,30 @@
       </div>
       <div class="rating-wrapper">
         <v-rating
-          :value="rating"
+          :value="course.rating"
           background-color="grey lighten-3"
           color="primary"
           :readonly="true"
           :size="24"
-        ></v-rating>
+        />
         <div class="subtitle-2 font-weight-bold">
-          {{ lessonsCount }} lessons
+          {{ course.lessonsCount }} lessons
         </div>
       </div>
     </v-card-title>
   </v-card>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { CourseItem } from '@/services/api.types'
+export default defineComponent({
   name: 'VideoCourseCard',
   props: {
+    course: {
+      type: Object as PropType<CourseItem>,
+      required: true
+    },
     playVideo: {
       required: true,
       type: Function
@@ -61,70 +69,20 @@ export default {
     stopVideo: {
       required: true,
       type: Function
-    },
-    refName: {
-      required: true,
-      type: String
-    },
-    previewImageLink: {
-      required: true,
-      type: String
-    },
-    link: {
-      required: true,
-      type: String
-    },
-    status: {
-      required: true,
-      type: String
-    },
-    title: {
-      require: true,
-      type: String,
-      default() {
-        return 'Title'
-      }
-    },
-    skills: {
-      require: true,
-      type: Array,
-      default() {
-        return ['some skills']
-      }
-    },
-    rating: {
-      require: true,
-      type: Number,
-      default() {
-        return 0
-      }
-    },
-    lessonsCount: {
-      require: true,
-      type: Number,
-      default() {
-        return 0
-      }
-    },
-    courseId: {
-      require: true,
-      type: String,
-      default () {
-        return '1'
-      }
-    }
-  },
-  data () {
-    return {
-      nameElement: 'videoPlayer'
     }
   },
   computed: {
-    imgPath () {
-      return this.previewImageLink + '/cover.webp'
+    imgPath (): string {
+      return this.course.previewImageLink + '/cover.webp'
     },
+    isLaunched (): boolean {
+      return this.course.status === 'launched'
+    },
+    getPath (): string {
+      return `/courses/${this.course.id}`
+    }
   }
-}
+})
 </script>
 
 <style scoped lang="scss">

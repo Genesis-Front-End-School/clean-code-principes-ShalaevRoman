@@ -10,15 +10,7 @@
           lg="4"
         >
           <VideoCourseCard
-            :course-id="course.id"
-            :link="course.meta.courseVideoPreview.link"
-            :status="course.status"
-            :title="course.title"
-            :skills="course.meta.skills"
-            :rating="course.rating"
-            :lessons-count="course.lessonsCount"
-            :preview-image-link="course.previewImageLink"
-            :ref-name="course.id"
+            :course="course"
             :play-video="playVideo"
             :stop-video="stopVideo"
           />
@@ -28,46 +20,49 @@
         v-model="currentPage"
         :total-visible="5"
         :length="paginationLength"
-      ></v-pagination>
+      />
     </v-container>
   </div>
 </template>
 
-<script>
-import Hls from 'hls.js'
+<script lang="ts">
+import Hls, { Events } from 'hls.js'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { CourseItem } from '~/services/api.types'
+import { CoursesListData } from '~/types/typesForComponentData'
 
-export default {
+export default defineComponent({
   name: 'CoursesList',
-  data() {
+  data (): CoursesListData {
     return {
       currentPage: 1,
-      itemsPerPage: 10,
-    };
+      itemsPerPage: 10
+    }
   },
   computed: {
-    allCourses() {
-      return this.$store.state.courses.allCourses
+    allCourses (): CourseItem[] {
+      return this.$accessor.coursesData.allCourses
     },
-    displayedCourses() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.allCourses.slice(start, end);
+    displayedCourses (): CourseItem[] {
+      const start = (this.currentPage - 1) * this.itemsPerPage
+      const end = start + this.itemsPerPage
+      return this.allCourses.slice(start, end)
     },
-    paginationLength() {
+    paginationLength (): number {
       return Math.ceil(this.allCourses.length / this.itemsPerPage)
     }
   },
   methods: {
-    playVideo(refName, link) {
-      const video = refName
+    playVideo (refItem: HTMLVideoElement, link: string): void {
+      const video = refItem
 
       if (Hls.isSupported()) {
         const hls = new Hls()
         hls.loadSource(link)
         hls.attachMedia(video)
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        hls.on(Events.MANIFEST_PARSED, () => {
           video.play()
-        });
+        })
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = link
         video.addEventListener('loadedmetadata', () => {
@@ -75,15 +70,11 @@ export default {
         })
       }
     },
-    stopVideo(refName) {
+    stopVideo (refName: HTMLVideoElement): void {
       const video = refName
       video.pause()
       video.currentTime = 0
     }
   }
-};
+})
 </script>
-
-<style lang="scss">
-
-</style>

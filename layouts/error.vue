@@ -3,37 +3,39 @@
     <h1>
       {{ title }}
     </h1>
-    <p>
+    <p class="red--text">
       {{ message }}
     </p>
-    <NuxtLink to="/"> Home page </NuxtLink>
+    <NuxtLink to="/">
+      Home page
+    </NuxtLink>
   </v-app>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { AxiosError } from 'axios'
+
+export default defineComponent({
   name: 'EmptyLayout',
   layout: 'empty',
   props: {
     error: {
-      type: Object,
-      default: null,
-    },
-  },
-  data() {
-    return {
-      title: this.getErrorTitle(this.error.statusCode),
-      message: this.error.message
+      required: true,
+      type: Object as PropType<AxiosError>
     }
   },
-  head() {
-    const title = this.getErrorTitle(this.error.statusCode)
-    return {
-      title,
+  computed: {
+    title (): string {
+      const status = this.error.response?.status || 0
+      return this.getErrorTitle(status)
+    },
+    message (): string {
+      return this.error.message || 'An error occurred'
     }
   },
   methods: {
-    getErrorTitle(code) {
+    getErrorTitle (code: number): string {
       switch (code) {
         case 404:
           return '404 Not Found sorry)'
@@ -46,7 +48,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style scoped>

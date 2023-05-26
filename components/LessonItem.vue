@@ -3,10 +3,12 @@
     :disabled="isLessonLocked"
     @click="chooseLesson()"
   >
-    <v-list-item-title>{{ lesson.title }}</v-list-item-title>
+    <v-list-item-title>
+      {{ lesson.title }}
+    </v-list-item-title>
     <v-list-item-action>
       <v-icon
-        v-if="lessonStatus"
+        v-if="!isLessonLocked"
         :color="colorForButton"
       >
         mdi-play-circle
@@ -18,43 +20,34 @@
   </v-list-item>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import { Lesson } from '@/services/api.types'
+export default defineComponent({
   name: 'LessonItem',
   props: {
     lesson: {
       required: true,
-      type: Object
+      type: Object as PropType<Lesson>
     },
     selectedLesson: {
       required: false,
-      type: Object,
-      default() {
-        return {
-          title: 'Hello'
-        }
-      }
+      type: Object as PropType<Lesson | null>,
+      default: null
     }
   },
   computed: {
-    isLessonLocked () {
+    isLessonLocked (): boolean {
       return this.lesson.status === 'locked'
     },
-    lessonStatus () {
-      return this.lesson.status === 'unlocked'
-    },
-    colorForButton () {
+    colorForButton (): string {
       return this.selectedLesson === this.lesson ? '#00E676' : 'gray'
     }
   },
   methods: {
-    chooseLesson () {
+    chooseLesson (): void {
       this.$emit('onSelectLesson', this.lesson)
     }
   }
-}
+})
 </script>
-
-<style scoped lang="scss">
-
-</style>
