@@ -12,6 +12,7 @@ describe('DefaultLayout', () => {
   beforeEach(() => {
     wrapper = shallowMount(DefaultLayout, {
       propsData: {
+        darkTheme: true,
         drawer: false,
         items: [
           {
@@ -65,5 +66,18 @@ describe('DefaultLayout', () => {
 
     const currentYear = new Date().getFullYear()
     expect(yearSpan.text()).toBe(`© ${currentYear}`)
+  })
+
+  test('toggles darkTheme when v-switch is clicked', async () => {
+    const switcher = wrapper.findComponent({ name: 'v-switch' })
+
+    switcher.vm.$emit('change', false)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.darkTheme).toBe(false)
+
+
+    switcher.vm.$emit('change', true)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.darkTheme).toBe(true)
   })
 })
