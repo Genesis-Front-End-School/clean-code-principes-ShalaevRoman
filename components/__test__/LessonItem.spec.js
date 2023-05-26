@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import LessonItem from '@/components/LessonItem.vue'
+import LessonItem from '~/components/LessonItem.vue'
 import { Lesson } from '~/__mocks__/coursesData'
 
 describe('LessonItem', () => {

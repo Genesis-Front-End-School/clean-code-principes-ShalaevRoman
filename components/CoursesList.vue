@@ -28,8 +28,8 @@
 <script lang="ts">
 import Hls, { Events } from 'hls.js'
 import { defineComponent } from '@nuxtjs/composition-api'
-import { CourseItem } from '~/services/api.types'
-import { CoursesListData } from '~/types/typesForComponentData'
+import { CourseItem } from '~/shared/services/api.types'
+import { CoursesListData } from '~/shared/types/typesForComponentData'
 
 export default defineComponent({
   name: 'CoursesList',

@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
-import { CourseItem } from '@/services/api.types'
+import { CourseItem } from '~/shared/services/api.types'
 export default defineComponent({
   name: 'VideoCourseCard',
   props: {

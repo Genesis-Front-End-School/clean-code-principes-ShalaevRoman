@@ -56,8 +56,8 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { Lesson, CourseItem } from '@/services/api.types'
-import { CourseByIdData } from '~/types/typesForComponentData'
+import { Lesson, CourseItem } from '@/shared/services/api.types'
+import { CourseByIdData } from '~/shared/types/typesForComponentData'
 export default defineComponent({
   data (): CourseByIdData {
     return {

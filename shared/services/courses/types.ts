@@ -1,4 +1,4 @@
-import { CourseItem } from '~/services/api.types'
+import { CourseItem } from '~/shared/services/api.types'
 
 export interface CoursesApi {
   getAll: () => Promise<CourseItem[]>

@@ -1,4 +1,4 @@
-import allCourses from '@/pages/courses/allCourses.vue'
+import allCourses from '~/pages/courses/allCourses.vue'
 
 describe('allCourses', () => {
   test('fetch method should call getToken and getCourses', async () => {
