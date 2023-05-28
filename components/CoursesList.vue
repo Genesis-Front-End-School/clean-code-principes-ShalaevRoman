@@ -10,6 +10,7 @@
           lg="4"
         >
           <VideoCourseCard
+            class="secondary"
             :course="course"
             :play-video="playVideo"
             :stop-video="stopVideo"

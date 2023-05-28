@@ -7,6 +7,8 @@ interface MenuItems {
   to: string
 }
 export interface DefaultLayoutData {
+
+  darkTheme: boolean
   drawer: boolean
   items: MenuItems[]
   title: string
