@@ -75,7 +75,6 @@ describe('DefaultLayout', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.darkTheme).toBe(false)
 
-
     switcher.vm.$emit('change', true)
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.darkTheme).toBe(true)

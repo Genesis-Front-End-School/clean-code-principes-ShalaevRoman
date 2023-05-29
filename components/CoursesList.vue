@@ -12,8 +12,6 @@
           <VideoCourseCard
             class="secondary"
             :course="course"
-            :play-video="playVideo"
-            :stop-video="stopVideo"
           />
         </v-col>
       </v-row>
@@ -27,7 +25,6 @@
 </template>
 
 <script lang="ts">
-import Hls, { Events } from 'hls.js'
 import { defineComponent } from '@nuxtjs/composition-api'
 import { CourseItem } from '~/shared/services/api.types'
 import { CoursesListData } from '~/shared/types/typesForComponentData'
@@ -51,30 +48,6 @@ export default defineComponent({
     },
     paginationLength (): number {
       return Math.ceil(this.allCourses.length / this.itemsPerPage)
-    }
-  },
-  methods: {
-    playVideo (refItem: HTMLVideoElement, link: string): void {
-      const video = refItem
-
-      if (Hls.isSupported()) {
-        const hls = new Hls()
-        hls.loadSource(link)
-        hls.attachMedia(video)
-        hls.on(Events.MANIFEST_PARSED, () => {
-          video.play()
-        })
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = link
-        video.addEventListener('loadedmetadata', () => {
-          video.play()
-        })
-      }
-    },
-    stopVideo (refName: HTMLVideoElement): void {
-      const video = refName
-      video.pause()
-      video.currentTime = 0
     }
   }
 })

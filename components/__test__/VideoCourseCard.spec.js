@@ -8,9 +8,7 @@ describe('VideoCourseCard', () => {
   beforeEach(() => {
     wrapper = shallowMount(VideoCourseCard, {
       propsData: {
-        course: Course,
-        playVideo: jest.fn(),
-        stopVideo: jest.fn()
+        course: Course
       }
     })
   })
@@ -37,18 +35,6 @@ describe('VideoCourseCard', () => {
     expect(videoPlayer.attributes('poster')).toBe(wrapper.props().course.previewImageLink + '/cover.webp')
     expect(videoPlayer.classes('cursor-pointer')).toBe(true)
     expect(videoPlayer.classes('video-player')).toBe(true)
-  })
-
-  test('emits the correct event when video player is hovered or stopped', () => {
-    const videoPlayer = wrapper.find('video')
-
-    videoPlayer.trigger('mouseenter')
-    expect(wrapper.props('playVideo')).toHaveBeenCalledTimes(1)
-    expect(wrapper.props('playVideo')).toHaveBeenCalledWith(videoPlayer.element, wrapper.props().course.meta.courseVideoPreview.link)
-
-    videoPlayer.trigger('mouseout')
-    expect(wrapper.props('stopVideo')).toHaveBeenCalledTimes(1)
-    expect(wrapper.props('stopVideo')).toHaveBeenCalledWith(videoPlayer.element)
   })
 
   test('events are fired in the correct sequence', () => {

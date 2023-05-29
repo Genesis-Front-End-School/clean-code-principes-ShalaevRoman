@@ -7,42 +7,25 @@
         muted
         controls
         class="cursor-pointer video-player pa-5"
-        @mouseenter="playVideo($refs[course.id], course.meta.courseVideoPreview.link)"
-        @mouseout="stopVideo($refs[course.id])"
+        @mouseenter="playVideo()"
+        @mouseout="stopVideo()"
       />
     </div>
-    <v-avatar
+    <MyAvatar
       v-if="isLaunched"
-      class="mt-2 ml-2"
-      color="white"
-      size="xs"
-    >
-      <v-icon color="success">
-        mdi-check-bold
-      </v-icon>
-    </v-avatar>
+    />
     <v-card-title class="pt-4 d-flex flex-column">
       <div class="headline font-weight-bold mb-2">
         {{ course.title }}
       </div>
       <div class="grey--text font-weight-light mb-3 skills-wrapper">
-        <ul class="skills-list">
-          <li
-            v-for="(skill, i) in course.skills"
-            :key="i"
-            class="skills-list__item"
-          >
-            {{ skill }}
-          </li>
-        </ul>
+        <SkillsList
+          :skills="course.meta.skills"
+        />
       </div>
       <div class="rating-wrapper">
-        <v-rating
-          :value="course.rating"
-          background-color="grey lighten-3"
-          color="primary"
-          :readonly="true"
-          :size="24"
+        <MyRating
+          :rating="course.rating"
         />
         <div class="subtitle-2 font-weight-bold">
           {{ course.lessonsCount }} lessons
@@ -54,21 +37,16 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import Hls, { Events } from 'hls.js'
+import { SkillsList, MyRating, MyAvatar } from 'my-library'
 import { CourseItem } from '~/shared/services/api.types'
 export default defineComponent({
   name: 'VideoCourseCard',
+  components: { SkillsList, MyRating, MyAvatar },
   props: {
     course: {
       type: Object as PropType<CourseItem>,
       required: true
-    },
-    playVideo: {
-      required: true,
-      type: Function
-    },
-    stopVideo: {
-      required: true,
-      type: Function
     }
   },
   computed: {
@@ -80,6 +58,31 @@ export default defineComponent({
     },
     getPath (): string {
       return `/courses/${this.course.id}`
+    }
+  },
+  methods: {
+    playVideo (): void {
+      const video = this.$refs[this.course.id] as HTMLVideoElement
+      const link = this.course.meta.courseVideoPreview.link
+
+      if (Hls.isSupported()) {
+        const hls = new Hls()
+        hls.loadSource(link)
+        hls.attachMedia(video)
+        hls.on(Events.MANIFEST_PARSED, () => {
+          video.play()
+        })
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = link
+        video.addEventListener('loadedmetadata', () => {
+          video.play()
+        })
+      }
+    },
+    stopVideo (): void {
+      const video = this.$refs[this.course.id] as HTMLVideoElement
+      video.pause()
+      video.currentTime = 0
     }
   }
 })
